@@ -6,16 +6,21 @@
   <title>Privacy Policy — Social Steps</title>
   <meta name="description" content="How Social Steps handles your data." />
   <link rel="icon" href="/assets/logo.png" />
+  <link rel="apple-touch-icon" href="/assets/logo.png" />
+  <meta name="theme-color" content="#f7f9fd" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="/styles.css" />
 </head>
 <body>
+  <div class="scroll-progress" id="scrollProgress"></div>
+
   <header class="site-header">
     <div class="container">
       <a class="brand" href="/"><img src="/assets/logo.png" alt="Social Steps" /> Social Steps</a>
       <nav class="nav-links">
         <a href="/#how" data-i18n="nav_how">How it works</a>
+        <a href="/#features" data-i18n="nav_features">Features</a>
         <a href="/faq/" data-i18n="nav_faq">FAQ</a>
         <a href="/privacy/" data-i18n="nav_privacy">Privacy</a>
         <a href="/terms/" data-i18n="nav_terms">Terms</a>
@@ -28,10 +33,22 @@
           </button>
           <div class="lang-menu"></div>
         </div>
-        <a class="btn btn-primary" href="/" data-i18n="cta_download">Download on the App Store</a>
+        <a class="appstore-badge header-cta" data-appstore href="https://apps.apple.com/nl/app/social-steps-earn-your-time/id6779904572" target="_blank" rel="noopener" aria-label="Download on the App Store"></a>
+        <button class="nav-toggle" aria-label="Open menu" aria-expanded="false">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+        </button>
       </div>
     </div>
   </header>
+
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="/#how" data-i18n="nav_how">How it works</a>
+    <a href="/#features" data-i18n="nav_features">Features</a>
+    <a href="/faq/" data-i18n="nav_faq">FAQ</a>
+    <a href="/privacy/" data-i18n="nav_privacy">Privacy</a>
+    <a href="/terms/" data-i18n="nav_terms">Terms</a>
+    <a class="appstore-badge" data-appstore href="https://apps.apple.com/nl/app/social-steps-earn-your-time/id6779904572" target="_blank" rel="noopener" aria-label="Download on the App Store"></a>
+  </div>
 
   <main>
     <div class="container">
@@ -64,7 +81,7 @@
           <p>We may update this policy from time to time. Material changes will be reflected on this page with a new "Last updated" date.</p>
 
           <h2>8. Contact</h2>
-          <p>If you have any questions about this policy, contact us at <a href="mailto:info@kortio.app">info@kortio.app</a>.</p>
+          <p>If you have any questions about this policy, contact us at <a href="mailto:info@social-steps.com">info@social-steps.com</a>.</p>
         </article>
       </div>
     </div>
@@ -80,6 +97,7 @@
         <div class="footer-col">
           <h4 data-i18n="footer_product">Product</h4>
           <a href="/#how" data-i18n="nav_how">How it works</a>
+          <a href="/#features" data-i18n="nav_features">Features</a>
           <a href="/faq/" data-i18n="nav_faq">FAQ</a>
         </div>
         <div class="footer-col">
@@ -89,12 +107,12 @@
         </div>
         <div class="footer-col">
           <h4 data-i18n="footer_contact">Contact</h4>
-          <a href="mailto:info@kortio.app">info@kortio.app</a>
+          <a href="mailto:info@social-steps.com">info@social-steps.com</a>
         </div>
       </div>
       <div class="footer-bottom">
         <span data-i18n="footer_rights">© 2026 Social Steps. All rights reserved.</span>
-        <span>Made for focus.</span>
+        <span data-i18n="footer_made">Made for focus.</span>
       </div>
     </div>
   </footer>
