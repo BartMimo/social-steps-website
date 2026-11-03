@@ -118,7 +118,12 @@ async function register({ installId, code }, ck = defaultCk) {
   return true;
 }
 
+// Code voor de Google Play-reviewers (staat in Play Console > App-toegang). Werkt altijd, ook
+// opnieuw op hetzelfde testtoestel, en wordt niet geteld als verwijzing.
+const REVIEW_CODES = new Set(['STEP-GPLAYR']);
+
 async function redeem({ installId, code }, ck = defaultCk) {
+  if (REVIEW_CODES.has(code)) return 'ok';
   const recs = await ck.lookup([codeRecord(code), ownerRecord(code, installId)]);
   if (!recs.get(codeRecord(code))) return 'invalid';
   if (recs.get(ownerRecord(code, installId))) return 'own';

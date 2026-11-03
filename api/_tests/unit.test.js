@@ -179,3 +179,9 @@ test('handler: validatiefouten zonder netwerk', async () => {
   r = await call('../referral/register', 'POST', '{kapot');
   assert.equal(r.statusCode, 400);
 });
+
+test('referral: reviewcode werkt altijd en schrijft niets', async () => {
+  const f = { lookup: async () => { throw new Error('geen lookup'); }, modifyOne: async () => { throw new Error('geen write'); } };
+  assert.equal(await logic.redeem({ installId: UUID, code: 'STEP-GPLAYR' }, f), 'ok');
+  assert.equal(await logic.redeem({ installId: UUID, code: 'STEP-GPLAYR' }, f), 'ok');
+});
