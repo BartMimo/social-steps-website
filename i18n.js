@@ -27,6 +27,12 @@
     );
   }
 
+  const PLAY_ALT = {
+    en: "Get it on Google Play", nl: "Ontdek het op Google Play", de: "Jetzt bei Google Play",
+    fr: "Disponible sur Google Play", es: "Disponible en Google Play", it: "Disponibile su Google Play",
+    pt: "Disponível no Google Play",
+  };
+
   const T = {
     en: {
       nav_how: "How it works", nav_features: "Features", nav_faq: "FAQ", nav_privacy: "Privacy", nav_terms: "Terms",
@@ -319,6 +325,11 @@
     // App Store badges
     const svg = badgeSVG(dict.badge_small || "Download on the", dict.badge_big || "App Store");
     document.querySelectorAll(".appstore-badge").forEach(function (el) { el.innerHTML = svg; });
+    // Google Play badges (official artwork per language, assets/google-play/<lang>.webp)
+    document.querySelectorAll("[data-play] img").forEach(function (img) {
+      img.src = "/assets/google-play/" + (PLAY_ALT[lang] ? lang : "en") + ".webp";
+      img.alt = PLAY_ALT[lang] || PLAY_ALT.en;
+    });
 
     const cur = LANGS.find(function (x) { return x.code === lang; });
     const lbl = document.querySelector(".lang-label");
