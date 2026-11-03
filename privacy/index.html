@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Privacy Policy — Social Steps</title>
-  <meta name="description" content="How Social Steps handles your data." />
+  <meta name="description" content="How Social Steps handles your data on iPhone and Android: steps, Health Connect, invite codes and how to delete your data." />
   <link rel="icon" href="/assets/logo.png" />
   <link rel="apple-touch-icon" href="/assets/logo.png" />
   <meta name="theme-color" content="#f7f9fd" />
@@ -55,9 +55,9 @@
       <div class="article-wrap">
         <article class="article">
           <h1>Privacy Policy</h1>
-          <p class="updated">Last updated: October 2026</p>
+          <p class="updated">Last updated: 3 November 2026</p>
 
-          <p>Social Steps ("the app", "we", "us") is made by Bartio, a sole proprietorship based in the Netherlands, which is responsible for the data described here. This policy explains what information the app uses and how it is handled. In short: <strong>your step history and your app selection stay on your device. There is no account, no advertising and no tracking, and we never sell data.</strong> Two parts of the iPhone app use Apple's iCloud (CloudKit): the shared community step counter and invite codes. Both are described below.</p>
+          <p>Social Steps ("the app", "we", "us") is made by Bartio, a sole proprietorship based in the Netherlands, which is responsible for the data described here. This policy covers the iPhone app and the Android app, and explains what information the app uses and how it is handled. In short: <strong>your step history and your app selection stay on your device. There is no account, no advertising and no tracking, and we never sell data.</strong> Two parts of the app use Apple's iCloud (CloudKit): the shared community step counter and invite codes. Sections 1 to 7 describe the iPhone app. Section 8 describes what is different in the Android app. Section 9 explains how to delete your data.</p>
 
           <h2>1. Health data (steps)</h2>
           <p>With your explicit permission, Social Steps reads your <strong>step count</strong> from Apple Health (HealthKit) to calculate how much screen time you have earned. Your steps and your daily history are processed and stored <strong>locally on your device</strong>. The only exception is the number of new steps that is added to the community counter (section 2). You can revoke this permission at any time in Settings › Privacy &amp; Security › Health.</p>
@@ -78,18 +78,60 @@
           <p>The app stores your settings and a daily history (steps, earned and used minutes) locally on your device so the app can function. This data is not sent to us. Removing the app removes this data.</p>
 
           <h2>7. No tracking or analytics</h2>
-          <p>Social Steps contains <strong>no third-party advertising, no analytics SDKs, and no tracking</strong>. We do not create user profiles and there is no account or login.</p>
+          <p>Social Steps contains <strong>no third-party advertising, no analytics SDKs, and no tracking</strong>. We do not create user profiles and there is no account or login. This applies to both the iPhone and the Android app. The Android app does not use the advertising ID.</p>
 
-          <h2>8. Your rights</h2>
-          <p>You can ask us to access or delete the data described in sections 2 and 3 by emailing <a href="mailto:info@social-steps.com">info@social-steps.com</a>. Because we cannot see who you are in CloudKit, we may ask for your invite code to find the right records. You can also file a complaint with the Dutch Data Protection Authority (Autoriteit Persoonsgegevens).</p>
+          <h2 id="android">8. Android app</h2>
+          <p>The Android app works the same way, but uses Android's own building blocks instead of Apple Health and Screen Time. Everything below applies only to the Android app.</p>
 
-          <h2>9. Children</h2>
+          <h3 id="health-connect">8.1 Health Connect (steps)</h3>
+          <ul>
+            <li><strong>What we read:</strong> only your <strong>step count</strong>, through the Health Connect permission "Steps" (READ_STEPS). We do not read any other health or fitness data, such as distance, calories, heart rate or sleep, and we never write data to Health Connect.</li>
+            <li><strong>Reading in the background:</strong> with the Health Connect permission to read data in the background (READ_HEALTH_DATA_IN_BACKGROUND), the app can also read your step count while another app is open. This is needed so that an app you chose to block unlocks as soon as you have walked enough. Only step records are read, and only for this calculation.</li>
+            <li><strong>What we use it for:</strong> calculating the screen-time minutes you have earned (by default 200 steps = 1 minute) and showing your daily step ring, streak, weekly chart and home screen widget.</li>
+            <li><strong>Where it stays:</strong> your steps and daily history are processed and stored <strong>on your device</strong>. The only thing that leaves your device is the number of new steps, which is added without your name or any other health data to the anonymous community counter (section 8.4).</li>
+            <li><strong>No selling, no ads:</strong> step data is never sold, never used for advertising, profiling, credit or insurance purposes, and never shared with third parties. Vercel and Apple only process the community count on our behalf (section 8.4).</li>
+            <li><strong>How long we keep it:</strong> the step history on your device is kept until you remove the app or clear its data in Android settings. The community counter only holds running totals without any identifier; these are kept for as long as the counter exists in the app.</li>
+            <li><strong>Security:</strong> all data that leaves your device is sent encrypted over HTTPS (TLS) to our server, and our server talks to Apple CloudKit over HTTPS as well.</li>
+            <li><strong>Turning it off:</strong> you can revoke the permissions at any time in Health Connect › App permissions › Social Steps. The app then stops reading steps.</li>
+          </ul>
+          <p>Social Steps' use of information received from Health Connect adheres to the Health Connect Permissions policy, including the Limited Use requirements.</p>
+
+          <h3 id="accessibility">8.2 Accessibility service (app blocker)</h3>
+          <p>To block the apps you choose, the Android app uses Android's Accessibility Service ("Social Steps app blocker"). The service <strong>only sees which app comes to the foreground</strong> (its package name), so it can show the "Time for a walk" screen when that app is on your block list and your earned minutes are used up. It <strong>does not read your screen content, text, what you type or your messages</strong>, because the app is not allowed to retrieve window content. The package name is compared on your device and is never stored outside your device, sent or shared. Nothing is collected through this service. It is only switched on after an explanation in the app and your explicit consent, and you can turn it off at any time in Android settings. Blocking then stops.</p>
+
+          <h3 id="usage-access">8.3 Usage access, display over other apps and installed apps</h3>
+          <p>With your permission, the app uses <strong>usage access</strong> to count the minutes you spend in the apps you chose and, if the accessibility service is off, to see which app is in the foreground. It uses <strong>display over other apps</strong> to show the "Time for a walk" screen on top of a blocked app. To let you pick apps to block, it lists the apps that have an icon on your home screen. All of this happens <strong>only on your device</strong>: your app list, app usage and block list are never sent to us or anyone else. Reminders and the notification that shows blocking is active are created on the device as well.</p>
+
+          <h3 id="android-server">8.4 Community counter and invite codes (our server and iCloud)</h3>
+          <p>The Android app cannot use iCloud directly, so it talks to our own server at www.social-steps.com, which stores the data in the same Apple CloudKit database as the iPhone app.</p>
+          <ul>
+            <li><strong>Community counter:</strong> the app sends the number of new steps (all-time and today), the date and a <strong>random installation ID</strong>. That ID is created by the app when it is installed and is not linked to your name, Google account or phone number. The server only uses it to prevent abuse (a rate limit that is kept in memory for at most one hour) and adds the steps to the shared counters without any ID. The installation ID is not stored in CloudKit.</li>
+            <li><strong>Invite codes:</strong> when the app registers your personal invite code, and when you enter a friend's code, it sends the code and an identifier derived from your device's Android ID (ANDROID_ID). It does not send the Android ID itself. The server only stores a <strong>one-way hash</strong> (SHA-256, a scrambled value that cannot be turned back) of that identifier, together with the code and the date. This makes sure that a code belongs to one device and that a friend's code can be redeemed only once per device, also after reinstalling the app. These records are kept for as long as the invite programme exists, or until you ask us to delete them (section 9).</li>
+            <li><strong>Service providers:</strong> our server runs on <strong>Vercel</strong> (Vercel Inc.), which handles the requests, including your IP address as part of the internet connection. The data is stored in <strong>Apple CloudKit</strong> (Apple Inc.). Both only process data on our behalf, and may do so outside the European Union.</li>
+            <li>None of this is used for tracking, advertising or user profiles.</li>
+          </ul>
+
+          <h3 id="google-play">8.5 Purchases (Google Play)</h3>
+          <p>On Android, the Premium subscription is sold through <strong>Google Play Billing</strong>. Google processes the payment; we do not receive or store your payment details, and the app does not send your purchases to our server. Google's handling of purchase data is governed by Google's own privacy policy.</p>
+
+          <h3 id="android-device">8.6 Information stored on your device</h3>
+          <p>The app stores your settings, block list and a daily history (steps, earned and used minutes) on your device. If you have turned on Android backup, Android may include your settings and daily history in your device backup with Google. That backup is managed by Google under your Google account and we have no access to it. The installation ID and invite identifiers are excluded from backups. Removing the app or clearing its data in Android settings removes all of this from your device.</p>
+
+          <h2 id="delete-data">9. Delete your data</h2>
+          <p><strong>On your device:</strong> remove the app, or clear its storage in Android settings (Apps › Social Steps › Storage). This deletes your step history, settings and installation ID. On Android you can also revoke step access in Health Connect.</p>
+          <p><strong>On our server and in iCloud:</strong> send an email to <a href="mailto:info@social-steps.com?subject=Delete%20my%20data">info@social-steps.com</a> with your <strong>invite code</strong> (shown in the app under Settings › Invite a friend). We use the code to find the records linked to it, such as your code registration and invite redemptions, and <strong>delete them within 30 days</strong>. We confirm by email when it is done. You do not need an account for this.</p>
+          <p><strong>What cannot be deleted:</strong> steps that were already added to the community counter are part of an anonymous total. They are not stored per person and cannot be traced back to you, so they cannot be removed or reversed.</p>
+
+          <h2>10. Your rights</h2>
+          <p>You can ask us to access or delete the data described in sections 2, 3 and 8.4 by emailing <a href="mailto:info@social-steps.com">info@social-steps.com</a> (see section 9). Because we cannot see who you are in CloudKit or on our server, we may ask for your invite code to find the right records. You can also file a complaint with the Dutch Data Protection Authority (Autoriteit Persoonsgegevens).</p>
+
+          <h2>11. Children</h2>
           <p>Social Steps is not directed at children under 13. We do not knowingly collect any personal data from children.</p>
 
-          <h2>10. Changes to this policy</h2>
+          <h2>12. Changes to this policy</h2>
           <p>We may update this policy from time to time. Material changes will be reflected on this page with a new "Last updated" date.</p>
 
-          <h2>11. Contact</h2>
+          <h2>13. Contact</h2>
           <p>If you have any questions about this policy, contact us at <a href="mailto:info@social-steps.com">info@social-steps.com</a>.</p>
         </article>
       </div>

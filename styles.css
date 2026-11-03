@@ -84,6 +84,10 @@ img { max-width: 100%; display: block; }
 .appstore-badge:hover { transform: translateY(-2px); filter: brightness(1.06); }
 .appstore-badge svg { height: 54px; width: auto; border-radius: 12px; box-shadow: var(--shadow-sm); display: block; }
 .badge-row { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+.play-badge { display: inline-flex; transition: transform .18s ease, filter .18s ease; }
+.play-badge[hidden] { display: none; }
+.play-badge:hover { transform: translateY(-2px); filter: brightness(1.06); }
+.play-badge img { height: 54px; width: auto; display: block; }
 
 /* ---------- Header ---------- */
 .site-header {
@@ -329,7 +333,10 @@ section { position: relative; }
 .article h1 { font-size: clamp(30px, 5vw, 42px); font-weight: 800; letter-spacing: -.03em; }
 .article .updated { color: var(--muted); font-size: 14.5px; margin: 6px 0 30px; }
 .article h2 { font-size: 21px; font-weight: 700; margin: 34px 0 10px; letter-spacing: -.01em; }
-.article p, .article li { color: #2a3346; font-size: 16px; }
+.article h3 { font-size: 17px; font-weight: 700; margin: 24px 0 6px; letter-spacing: -.01em; }
+.article [id] { scroll-margin-top: 90px; }
+.article p + p { margin-top: 12px; }
+.article p, .article li { color: #2a3346; font-size: 16px; overflow-wrap: break-word; }
 .article a { color: var(--blue-600); }
 .article a:hover { text-decoration: underline; }
 .article ul { padding-left: 20px; margin-top: 8px; }
