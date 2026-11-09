@@ -182,6 +182,36 @@ test('handler: validatiefouten zonder netwerk', async () => {
 
 test('referral: reviewcode werkt altijd en schrijft niets', async () => {
   const f = { lookup: async () => { throw new Error('geen lookup'); }, modifyOne: async () => { throw new Error('geen write'); } };
-  assert.equal(await logic.redeem({ installId: UUID, code: 'STEP-GPLAYR' }, f), 'ok');
-  assert.equal(await logic.redeem({ installId: UUID, code: 'STEP-GPLAYR' }, f), 'ok');
+  const before = process.env.REVIEW_CODES;
+  try {
+    process.env.REVIEW_CODES = 'STEP-TESTAA, step-testbb';
+    assert.equal(await logic.redeem({ installId: UUID, code: 'STEP-TESTAA' }, f), 'ok');
+    assert.equal(await logic.redeem({ installId: UUID, code: 'STEP-TESTAA' }, f), 'ok');
+    assert.equal(await logic.redeem({ installId: UUID, code: 'STEP-TESTBB' }, f), 'ok');
+    // Zonder de variabele bestaat er geen reviewcode (niets in de broncode): dan gaat het de gewone weg (lookup).
+    delete process.env.REVIEW_CODES;
+    await assert.rejects(logic.redeem({ installId: UUID, code: 'STEP-TESTAA' }, f), /geen lookup/);
+    assert.equal(logic.reviewCodes({}).size, 0);
+    assert.equal(logic.reviewCodes({ REVIEW_CODES: '' }).size, 0);
+  } finally {
+    if (before === undefined) delete process.env.REVIEW_CODES; else process.env.REVIEW_CODES = before;
+  }
+});
+
+test('referral: per code tellen hooguit 3 per 24 uur en 12 in totaal mee; de vriend krijgt altijd ok', async () => {
+  const f = fakeCk();
+  const id = (n) => `00000000-0000-4000-8000-${String(n).padStart(12, '0')}`;
+  await logic.register({ installId: UUID, code: 'STEP-ABCDEF' }, f);
+  for (let n = 1; n <= 5; n++) assert.equal(await logic.redeem({ installId: id(n), code: 'STEP-ABCDEF' }, f), 'ok');
+  assert.equal(await logic.referralCount('STEP-ABCDEF', f), logic.MAX_COUNTED_PER_DAY);
+  // Niet-meegetelde inwisseling is wel vastgelegd: hetzelfde toestel kan niet nog eens.
+  assert.equal(await logic.redeem({ installId: id(5), code: 'STEP-ABCDEF' }, f), 'already');
+  // Een dag later tellen er weer nieuwe mee, tot het totaal van 12.
+  const old = { value: Date.now() - 2 * 86400000, type: 'TIMESTAMP' };
+  const age = () => { for (const r of f.db.values()) if (r.fields.referrerCode) r.fields.createdAt = old; };
+  for (let day = 0; day < 6; day++) {
+    age();
+    for (let n = 0; n < 4; n++) assert.equal(await logic.redeem({ installId: id(100 + day * 10 + n), code: 'STEP-ABCDEF' }, f), 'ok');
+  }
+  assert.equal(await logic.referralCount('STEP-ABCDEF', f), logic.MAX_COUNTED_PER_CODE);
 });

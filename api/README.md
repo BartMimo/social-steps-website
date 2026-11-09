@@ -47,6 +47,9 @@ pogingen op andere shards; bij HTTP 503 (throttling) direct stoppen.
 - `lifetimeDelta` 0..200000, `todayDelta` 0..100000, gehele getallen; `dayKey` UTC-datum -2..+1 dag.
 - Rate limit per IP en installId (per uur): community POST 120/30, register 20/5, redeem 10/5,
   count 60 per IP, community GET 300 per IP. In-memory per serverless-instantie: best effort.
+- Verwijzingen per code: er tellen er hooguit 12 in totaal en 3 per 24 uur mee voor de uitnodiger. Dat volgt uit
+  de records in CloudKit (duurzaam, over alle IP's heen). Boven de grens krijgt de vriend gewoon `ok` en wordt zijn
+  inwisseling vastgelegd, maar zonder `referrerCode`, zodat hij niet meetelt.
 
 ## Omgeving
 
@@ -56,6 +59,7 @@ pogingen op andere shards; bij HTTP 503 (throttling) direct stoppen.
 | `CK_KEY_ID` | key-id van de server-to-server key voor die omgeving |
 | `CK_PRIVATE_KEY` | inhoud van de PEM (EC prime256v1); `\n` letterlijk mag |
 | `CK_CONTAINER` | `iCloud.com.socialsteps.app` |
+| `REVIEW_CODES` | komma-gescheiden reviewcodes voor Google Play (`STEP-` + 6 tekens, zonder 0/O/1/I). Niet gezet of leeg = geen reviewcode. Staat alleen in Vercel, nooit in de repo |
 
 De privésleutel staat alleen in Vercel-env en lokaal buiten de repo. Nooit committen of loggen.
 

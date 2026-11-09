@@ -21,6 +21,8 @@ module.exports = async function handler(req, res) {
       else {
         data = await logic.readTotals(day);
         cache.set(day, { at: Date.now(), data });
+        // Oude dagen opruimen (er zijn hooguit 4 geldige dagsleutels tegelijk).
+        if (cache.size > 8) for (const [k, hit2] of cache) if (Date.now() - hit2.at >= CACHE_MS) cache.delete(k);
       }
       return send(res, 200, data, { 'Cache-Control': 'public, max-age=60, s-maxage=60, stale-while-revalidate=60' });
     }

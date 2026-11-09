@@ -118,19 +118,46 @@ async function register({ installId, code }, ck = defaultCk) {
   return true;
 }
 
-// Code voor de Google Play-reviewers (staat in Play Console > App-toegang). Werkt altijd, ook
-// opnieuw op hetzelfde testtoestel, en wordt niet geteld als verwijzing.
-const REVIEW_CODES = new Set(['STEP-GPLAYR']);
+// Codes voor de Google Play-reviewers (staan in Play Console > App-toegang). Werken altijd, ook opnieuw op hetzelfde
+// testtoestel, en tellen niet als verwijzing. Deze repo is openbaar: de codes staan daarom alleen in de
+// Vercel-variabele REVIEW_CODES (komma-gescheiden), nooit in de broncode. Niet gezet of leeg = geen reviewcode.
+function reviewCodes(env = process.env) {
+  return new Set(String(env.REVIEW_CODES || '').split(',').map((c) => c.trim().toUpperCase()).filter(Boolean));
+}
+
+// Rem op het zelf verzamelen van verwijzingen (met verzonnen installId's). De uitnodiger krijgt in de app maximaal
+// 12 beloningen; de server telt er daarom ook nooit meer dan 12 per code, en hooguit 3 per 24 uur. Dit staat in
+// CloudKit zelf (de bestaande records), dus het overleeft een koude start en geldt over alle IP-adressen heen.
+// De vriend krijgt zijn maand altijd: boven de grens wordt zijn inwisseling wel vastgelegd (één keer per toestel),
+// maar zonder referrerCode, zodat hij niet meetelt voor de uitnodiger (iOS en Android tellen op dat veld).
+const MAX_COUNTED_PER_CODE = 12;
+const MAX_COUNTED_PER_DAY = 3;
+
+async function referralStats(code, ck = defaultCk, nowMs = Date.now()) {
+  const json = await ck.query({
+    query: { recordType: REFERRAL_TYPE, filterBy: [{ fieldName: 'referrerCode', comparator: 'EQUALS', fieldValue: { value: code, type: 'STRING' } }] },
+    resultsLimit: MAX_REWARD_COUNT, desiredKeys: ['referrerCode', 'createdAt'],
+  });
+  const recs = (json.records || []).filter((r) => !r.serverErrorCode);
+  const dayAgo = nowMs - 86400000;
+  const recent = recs.filter((r) => {
+    const t = (r.fields && r.fields.createdAt && r.fields.createdAt.value) || (r.created && r.created.timestamp);
+    return !Number.isFinite(t) || t > dayAgo; // onbekend tijdstip telt als recent (voorzichtig)
+  }).length;
+  return { total: recs.length, recent };
+}
 
 async function redeem({ installId, code }, ck = defaultCk) {
-  if (REVIEW_CODES.has(code)) return 'ok';
-  const recs = await ck.lookup([codeRecord(code), ownerRecord(code, installId)]);
+  if (reviewCodes().has(code)) return 'ok';
+  const recs = await ck.lookup([codeRecord(code), ownerRecord(code, installId), redeemRecord(installId)]);
   if (!recs.get(codeRecord(code))) return 'invalid';
   if (recs.get(ownerRecord(code, installId))) return 'own';
-  const r = await ck.modifyOne('create', {
-    recordName: redeemRecord(installId), recordType: REFERRAL_TYPE,
-    fields: { referrerCode: { value: code, type: 'STRING' }, createdAt: now() },
-  });
+  if (recs.get(redeemRecord(installId))) return 'already';
+  const { total, recent } = await referralStats(code, ck);
+  const counts = total < MAX_COUNTED_PER_CODE && recent < MAX_COUNTED_PER_DAY;
+  const fields = { createdAt: now() };
+  if (counts) fields.referrerCode = { value: code, type: 'STRING' };
+  const r = await ck.modifyOne('create', { recordName: redeemRecord(installId), recordType: REFERRAL_TYPE, fields });
   if (!r.serverErrorCode) return 'ok';
   if (r.serverErrorCode === 'CONFLICT') return 'already';
   throw Object.assign(new Error(`modify ${r.serverErrorCode}`), { ck: r });
@@ -146,5 +173,6 @@ async function referralCount(code, ck = defaultCk) {
 
 module.exports = {
   SHARD_COUNT, allTimeIds, dayIds, sha256hex, readTotals, addToShard, contribute,
-  codeRecord, ownerRecord, redeemRecord, register, redeem, referralCount,
+  codeRecord, ownerRecord, redeemRecord, register, redeem, referralCount, reviewCodes, referralStats,
+  MAX_COUNTED_PER_CODE, MAX_COUNTED_PER_DAY,
 };

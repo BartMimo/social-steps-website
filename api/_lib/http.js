@@ -9,6 +9,9 @@ function send(res, status, obj, headers = {}) {
 }
 
 async function readBody(req) {
+  // Vercel ontleedt de body pas bij het opvragen en gooit dan bij kapotte JSON: dat is een fout van de client (400),
+  // geen storing bij CloudKit (502).
+  try { void req.body; } catch { return null; }
   if (req.body !== undefined && req.body !== null && typeof req.body === 'object' && !Buffer.isBuffer(req.body)) return req.body;
   let raw = typeof req.body === 'string' ? req.body : Buffer.isBuffer(req.body) ? req.body.toString('utf8') : null;
   if (raw === null) {
